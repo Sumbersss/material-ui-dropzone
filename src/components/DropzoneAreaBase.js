@@ -11,6 +11,8 @@ import Dropzone from 'react-dropzone';
 import {convertBytesToMbsOrKbs, isImage, readFile} from '../helpers';
 import PreviewList from './PreviewList';
 import SnackbarContentWrapper from './SnackbarContentWrapper';
+import {Flex} from 'realue';
+import {ButtonHelp} from '../CoreOctave/components/ButtonHelp';
 
 const styles = ({palette, shape, spacing}) => ({
     '@keyframes progress': {
@@ -46,9 +48,7 @@ const styles = ({palette, shape, spacing}) => ({
         backgroundImage: `repeating-linear-gradient(-45deg, ${palette.error.light}, ${palette.error.light} 25px, ${palette.error.dark} 25px, ${palette.error.dark} 50px)`,
         borderColor: palette.error.main,
     },
-    textContainer: {
-        textAlign: 'center',
-    },
+
     text: {
         marginBottom: spacing(3),
         marginTop: spacing(3),
@@ -57,6 +57,9 @@ const styles = ({palette, shape, spacing}) => ({
         width: 51,
         height: 51,
         color: palette.text.primary,
+    },
+    buttonHelp: {
+        paddingLeft: spacing(0.5),
     },
 });
 
@@ -71,7 +74,7 @@ const defaultGetPreviewIcon = (fileObject, classes) => {
             className={classes.image}
             role="presentation"
             src={fileObject.data}
-        />);
+            alt="presentation"/>);
     }
 
     return <AttachFileIcon className={classes.image} />;
@@ -204,6 +207,7 @@ class DropzoneAreaBase extends React.PureComponent {
             dropzoneParagraphClass,
             dropzoneProps,
             dropzoneText,
+            dropzoneHelp,
             fileObjects,
             filesLimit,
             getPreviewIcon,
@@ -251,20 +255,27 @@ class DropzoneAreaBase extends React.PureComponent {
                         >
                             <input {...getInputProps(inputProps)} />
 
-                            <div className={classes.textContainer}>
-                                <Typography
-                                    variant="h5"
-                                    component="p"
-                                    className={clsx(classes.text, dropzoneParagraphClass)}
-                                >
-                                    {dropzoneText}
-                                </Typography>
-                                {Icon ? (
+                            <Flex container direction="column" align="center">
+                                <Flex item container direction="row">
+                                    <Flex item>
+                                        <Typography
+                                            variant="h5"
+                                            component="p"
+                                            className={clsx(classes.text, dropzoneParagraphClass)}
+                                        >
+                                            {dropzoneText}
+                                        </Typography>
+                                    </Flex>
+                                    {dropzoneHelp && (
+                                        <Flex item className={classes.buttonHelp}>
+                                            <ButtonHelp placement="top-start">{dropzoneHelp}</ButtonHelp>
+                                        </Flex>
+                                    )}
+                                </Flex>
+                                <Flex item>
                                     <Icon className={classes.icon} />
-                                ) : (
-                                    <CloudUploadIcon className={classes.icon} />
-                                )}
-                            </div>
+                                </Flex>
+                            </Flex>
 
                             {previewsInDropzoneVisible &&
                                 <PreviewList
@@ -360,6 +371,7 @@ DropzoneAreaBase.defaultProps = {
         }
         return message;
     },
+    Icon: CloudUploadIcon,
 };
 
 export const FileObjectShape = PropTypes.shape({
@@ -384,6 +396,8 @@ DropzoneAreaBase.propTypes = {
     maxFileSize: PropTypes.number,
     /** Text inside the dropzone. */
     dropzoneText: PropTypes.string,
+    /** Help content inside the dropzone. */
+    dropzoneHelp: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     /** Custom CSS class name for dropzone container. */
     dropzoneClass: PropTypes.string,
     /** Custom CSS class name for text inside the container. */

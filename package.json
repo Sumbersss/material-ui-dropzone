@@ -42,14 +42,17 @@
   "dependencies": {
     "@babel/runtime": "^7.4.4",
     "clsx": "^1.0.2",
-    "react-dropzone": "^10.2.1"
+    "react-dropzone": "^10.2.1",
+    "realue": "^3.6.1",
+    "recompose": "^0.30.0"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.0.0",
     "@material-ui/icons": "^4.0.0",
     "prop-types": "^15.7.2",
     "react": ">= 16.8",
-    "react-dom": ">= 16.8"
+    "react-dom": ">= 16.8",
+    "react-is": "^16.8.6"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
